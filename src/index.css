@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #030014;
+
+  --color-light-100: #cecefb;
+  --color-light-200: #a8b5db;
+
+  --color-gray-100: #9ca4ab;
+
+  --color-dark-100: #0f0d23;
+
+  --font-dm-sans: DM Sans, sans-serif;
+
+  --breakpoint-xs: 480px;
+
+  --background-image-hero-pattern: url("/hero-bg.png");
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "DM Sans", serif;
+    font-optical-sizing: auto;
+    background: #030014;
+    color: white;
+  }
+
+  h1 {
+    @apply mx-auto max-w-4xl font-bold text-white sm:text-[64px] text-5xl text-center leading-tight sm:leading-[76px] tracking-[-1%];
+  }
+
+  h2 {
+    @apply font-bold text-white text-2xl sm:text-3xl;
+  }
+
+  main {
+    @apply relative bg-primary min-h-screen;
+  }
+
+  header {
+    @apply mt-5 sm:mt-10;
+  }
+
+  header img {
+    @apply drop-shadow-md mx-auto w-full max-w-lg h-auto object-contain;
+  }
+}
+
+@layer components {
+  .pattern {
+    @apply z-0 absolute bg-hero-pattern bg-cover bg-center w-full h-screen;
+  }
+
+  .wrapper {
+    @apply z-10 relative flex flex-col mx-auto xs:p-10 px-5 py-12 max-w-7xl;
+  }
+}
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] text-transparent;
+  }
+  .fancy-text {
+    -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
+    font-size: 190px;
+    font-family: "Bebas Neue", sans-serif;
+  }
+  .search {
+    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+
+    & div {
+      @apply relative flex items-center;
+    }
+
+    & img {
+      @apply left-2 absolute w-5 h-5;
+    }
+
+    & input {
+      @apply bg-transparent py-2 sm:pr-10 pl-10 outline-hidden w-full text-gray-200 text-base placeholder-light-200;
+    }
+  }
+}

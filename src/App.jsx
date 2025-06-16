@@ -6,14 +6,7 @@ import Search from "./components/Search";
 import Spinner from "./components/Spinner";
 
 const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMBD_API_KEY;
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY; // ✅ Corrected spelling
 
 const App = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -24,14 +17,23 @@ const App = () => {
   const [trendingMovies, setTrendingMovies] = React.useState([]);
 
   const [debounceTerm] = useDebounce(searchTerm, 500);
+
   const fetchMovies = async (query = "") => {
     setLoading(true);
     setErrorMessage("");
     try {
       const endpoint = query
-        ? `/tmdb/search/movie?query=${query}`
-        : `/tmdb/discover/movie?sort_by=popularity.desc`;
-      const response = await fetch(endpoint, options);
+        ? `${BASE_URL}/search/movie?query=${encodeURIComponent(
+            query
+          )}&api_key=${API_KEY}`
+        : `${BASE_URL}/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`;
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Error fetching Movies. Please Try Again.");
@@ -39,7 +41,6 @@ const App = () => {
 
       const result = await response.json();
 
-      // TMDB API uses 'results' for data, not checking 'Response' like OMDB
       if (!result.results) {
         setErrorMessage(
           result.Error || "Error fetching Movies. Please Try Again."
@@ -50,6 +51,7 @@ const App = () => {
 
       setMovies(result.results || []);
       console.log(result.results);
+
       if (query && result.results.length > 0) {
         UpdateSearchCount(query, result.results[0]);
       }
@@ -63,6 +65,7 @@ const App = () => {
       setLoading(false);
     }
   };
+
   const loadTrendingMovies = async () => {
     try {
       const movies = await getTrendingMovies();
@@ -78,6 +81,7 @@ const App = () => {
   React.useEffect(() => {
     fetchMovies(debounceTerm);
   }, [debounceTerm]);
+
   React.useEffect(() => {
     loadTrendingMovies();
   }, []);
@@ -93,6 +97,7 @@ const App = () => {
               Without the Hassle
             </h1>
           </header>
+
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
           <section className="trending">
@@ -110,9 +115,9 @@ const App = () => {
 
           <section className="all-movies">
             <h2 className="">All Movies</h2>
+
             {loading ? (
               <div className="flex justify-center">
-                {" "}
                 <Spinner />
               </div>
             ) : errorMessage ? (

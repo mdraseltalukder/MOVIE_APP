@@ -29,8 +29,8 @@ const App = () => {
     setErrorMessage("");
     try {
       const endpoint = query
-        ? `${BASE_URL}/search/movie?query=${query}`
-        : `${BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        ? `/tmdb/search/movie?query=${query}`
+        : `/tmdb/discover/movie?sort_by=popularity.desc`;
       const response = await fetch(endpoint, options);
 
       if (!response.ok) {

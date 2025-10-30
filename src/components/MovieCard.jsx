@@ -3,7 +3,7 @@ const MovieCard = ({
 }) => {
   return (
     <>
-      <div className="movie-card">
+      <div className="movie-card cursor-pointer">
         <img
           src={
             poster_path
